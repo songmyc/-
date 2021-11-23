@@ -17,9 +17,9 @@ const $ = new Env("晶彩看点看看赚");
 const notify = $.isNode() ? require('./sendNotify') : '';
 message = ""
 
-let lookStartbody= $.isNode() ? (process.env.lookStartbody ? process.env.lookStartbody : "") : ($.getdata('lookStartbody') ? $.getdata('lookStartbody') : "")
-let lookStartbodyArr = []
-let lookStartbodys = ""
+let tqlookStartbody= $.isNode() ? (process.env.tqlookStartbody ? process.env.tqlookStartbody : "") : ($.getdata('tqlookStartbody') ? $.getdata('tqlookStartbody') : "")
+let tqlookStartbodyArr = []
+let tqlookStartbodys = ""
 
 let jc_cookie= $.isNode() ? (process.env.jc_cookie ? process.env.jc_cookie : "") : ($.getdata('jc_cookie') ? $.getdata('jc_cookie') : "")
 let jc_cookieArr = []
@@ -73,40 +73,40 @@ if (!jc_cookie) {
             jc_cookieArr.push(jc_cookies[item])
         }
     })
-if (!lookStartbody) {
+if (!tqlookStartbody) {
      $.msg($.name, '【提示】请点击看看赚某一任务获取body', '不知道说啥好', {
          "open-url": "给您劈个叉吧"
      });
      $.done()
  }
- else if (lookStartbody.indexOf("&") == -1) {
-            lookStartbodyArr.push(lookStartbody)
+ else if (tqlookStartbody.indexOf("&") == -1) {
+            tqlookStartbodyArr.push(tqlookStartbody)
  }
- else if (lookStartbody.indexOf("&") > -1) {
-            lookStartbodys = lookStartbody.split("&")
+ else if (tqlookStartbody.indexOf("&") > -1) {
+            tqlookStartbodys = tqlookStartbody.split("&")
  }
- else if (process.env.lookStartbody && process.env.lookStartbody.indexOf('&') > -1) {
-            lookStartbodyArr = process.env.lookStartbody.split('&');
+ else if (process.env.tqlookStartbody && process.env.tqlookStartbody.indexOf('&') > -1) {
+            tqlookStartbodyArr = process.env.tqlookStartbody.split('&');
             console.log(`您选择的是用"&"隔开\n`)
  }
  else {
-            lookStartbodys = [process.env.lookStartbody]
+            tqlookStartbodys = [process.env.tqlookStartbody]
  };
-    Object.keys(lookStartbodys).forEach((item) => {
-        if (lookStartbodys[item]) {
-            lookStartbodyArr.push(lookStartbodys[item])
+    Object.keys(tqlookStartbodys).forEach((item) => {
+        if (tqlookStartbodys[item]) {
+            tqlookStartbodyArr.push(tqlookStartbodys[item])
         }
     })
 
 !(async () => {
      if (typeof $request !== "undefined") {
-     await getlookStartbody()
+     await gettqlookStartbody()
      $.done()
  }else{
-    console.log(`共${lookStartbodyArr.length}个看看赚body`)
-	        for (let k = 0; k < lookStartbodyArr.length; k++) {
+    console.log(`共${tqlookStartbodyArr.length}个看看赚body`)
+	        for (let k = 0; k < tqlookStartbodyArr.length; k++) {
 
-                lookStartbody1 = lookStartbodyArr[k];
+                tqlookStartbody1 = tqlookStartbodyArr[k];
                 console.log(`--------第 ${k + 1} 次看看赚激活执行中--------\n`)
                     await lookStart()
                 await $.wait(1000);
@@ -172,23 +172,23 @@ function openbox(id,jc_cookie1,timeout=0) {
 
 
 //获取看看赚激活body
-async function getlookStartbody() {
+async function gettqlookStartbody() {
 if ($request.url.match(/\/tq.xunsl.com\/v5\/nameless\/adlickstart/)) {
           bodyVal=$request.body
           await $.wait(1100);
-        if (lookStartbody) {
-            if (lookStartbody.indexOf(bodyVal) > -1) {
+        if (tqlookStartbody) {
+            if (tqlookStartbody.indexOf(bodyVal) > -1) {
                 $.log("此看看赚任务请求已存在，本次跳过")
-            } else if (lookStartbody.indexOf(bodyVal) == -1) {
-                lookStartbodys = lookStartbody + "&" + bodyVal;
-                $.setdata(lookStartbodys, 'lookStartbody');
-                $.log(`${$.name}获取看看赚任务: 成功, lookStartbodys: ${bodyVal}`);
-                bodys = lookStartbodys.split("&")
+            } else if (tqlookStartbody.indexOf(bodyVal) == -1) {
+                tqlookStartbodys = tqlookStartbody + "&" + bodyVal;
+                $.setdata(tqlookStartbodys, 'tqlookStartbody');
+                $.log(`${$.name}获取看看赚任务: 成功, tqlookStartbodys: ${bodyVal}`);
+                bodys = tqlookStartbodys.split("&")
                 $.msg($.name, "获取第" + bodys.length + "个看看赚任务请求: 成功🎉", ``)
             }
         } else {
-            $.setdata(bodyVal, 'lookStartbody');
-            $.log(`${$.name}获取看看赚任务: 成功, lookStartbodys: ${bodyVal}`);
+            $.setdata(bodyVal, 'tqlookStartbody');
+            $.log(`${$.name}获取看看赚任务: 成功, tqlookStartbodys: ${bodyVal}`);
             $.msg($.name, `获取第一个看看赚任务请求: 成功🎉`, ``)
         }
     }
@@ -200,7 +200,7 @@ function lookStart(timeout = 0) {
         let url = {
             url : 'https://tq.xunsl.com/v5/nameless/adlickstart.json',
             headers : lookStartheader,
-            body : lookStartbody1,}//xsgbody,}
+            body : tqlookStartbody1,}//xsgbody,}
         $.post(url, async (err, resp, data) => {
             try {
 
@@ -223,8 +223,8 @@ function lookStart(timeout = 0) {
 
                 }else{
                     console.log('\n激活看看赚任务失败')
-                    smbody = $.getdata('lookStartbody').replace(lookStartbody1 + "&", "");
-                    $.setdata(smbody, 'lookStartbody');
+                    smbody = $.getdata('tqlookStartbody').replace(tqlookStartbody1 + "&", "");
+                    $.setdata(smbody, 'tqlookStartbody');
                     console.log("该看看赚任务已自动删除")
                 }
             } catch (e) {
@@ -240,7 +240,7 @@ function lookstart(timeout = 0) {
         let url = {
             url : 'https://tq.xunsl.com/v5/nameless/bannerstatus.json',
             headers : lookheader,
-            body : lookStartbody1,}//xsgbody,}
+            body : tqlookStartbody1,}//xsgbody,}
         $.post(url, async (err, resp, data) => {
             try {
 
@@ -264,7 +264,7 @@ function reward(timeout = 0) {
         let url = {
             url : 'https://tq.xunsl.com/v5/nameless/adlickend.json',
             headers : rewardheader,
-            body : lookStartbody1,}//xsgbody,}
+            body : tqlookStartbody1,}//xsgbody,}
         $.post(url, async (err, resp, data) => {
             try {
 
